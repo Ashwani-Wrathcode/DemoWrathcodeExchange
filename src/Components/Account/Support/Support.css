@@ -1,0 +1,173 @@
+.help-support {
+    padding: 30px;
+    background-color: #0b0e14;
+    min-height: 100vh;
+    color: #fff;
+
+}
+
+.help-support h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.form-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.form-groupSupport {
+    position: relative;
+}
+
+.form-groupSupport label {
+    position: absolute;
+    top: -5px;
+    left: 15px;
+    background: #090d19;
+    padding: 0 8px;
+    color: #9ca3af;
+    font-size: 10px;
+}
+
+.form-groupSupport input,
+.form-groupSupport select,
+.form-groupSupport textarea {
+    width: 80%;
+    /* height: 30px; */
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    color: rgb(245, 239, 239);
+    outline: none;
+}
+
+
+
+.form-groupSupport textarea {
+    resize: none;
+}
+
+.form-groupSupport select option {
+    background: #1a1f2e;
+    color: #f5efef;
+}
+
+.description {
+    grid-column: span 2;
+}
+
+.submit-btn {
+    display: block;
+    width: 150px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    background: #b88a20;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+
+.issue-list {
+    margin-top: 50px;
+}
+
+.issue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box {
+    width: 40px;
+    height: 40px;
+    background: #202a3c;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+
+
+}
+
+th {
+    text-align: left;
+    color: #9ca3af;
+    font-size: 12px;
+
+}
+
+td {
+    padding: 18px 0;
+    color: #fff;
+}
+
+.ticket-id {
+    font-weight: 600;
+    font-size: 12px;
+    margin-right: 8px;
+}
+
+.priority {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 10px;
+}
+
+.priority.low {
+    background: #374151;
+}
+
+.priority.medium {
+    background: #4b5563;
+}
+
+.priority.high {
+    background: #6b7280;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff3c;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.view-btn {
+    border: none;
+    background: #4ade80;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .description {
+        grid-column: span 1;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

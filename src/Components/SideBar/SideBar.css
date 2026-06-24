@@ -1,0 +1,173 @@
+.main-containorSide {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    background: #0b0e14;
+    padding-top: 80px;
+    /* margin-top: 20px; */
+    overflow: hidden;
+}
+
+.heading {
+    display: flex;
+    font-size: 10px;
+    margin-bottom: 10px;
+    gap: 10px;
+
+}
+
+.heading span {
+    font-size: 20px;
+
+}
+
+.sideBar-main {
+    display: flex;
+    width: 100%;
+    max-width: 1440px;
+
+}
+
+.side-content {
+    width: 240px;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+/* Custom Scrollbar for Sidebar */
+.side-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.side-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.side-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.side-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.side-content button {
+    background: transparent;
+    color: #a0a0a0;
+    border: none;
+    margin-top: 10px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-content button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.side-content button.active {
+    background: linear-gradient(90deg, rgba(176, 180, 185, 0.15) 0%, rgba(99, 123, 303, 0) 100%);
+
+    padding-left: 16px;
+    font-weight: 600;
+}
+
+.side-content button:last-child {
+    margin-top: auto;
+
+    color: #ff4d4f;
+
+}
+
+.side-content button:last-child:hover {
+    background-color: rgba(255, 77, 79, 0.1);
+    color: #ff4d4f;
+    transform: translateX(4px);
+}
+
+
+.side-bar {
+    flex: 1;
+    min-width: 0;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Content Area */
+.side-bar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.side-bar::-webkit-scrollbar-track {
+    background: #0b0e14;
+}
+
+.side-bar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.side-bar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+@media (max-width: 768px) {
+    .sideBar-main {
+        flex-direction: column;
+    }
+
+    .side-content {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 15px;
+        justify-content: center;
+    }
+
+    .side-content button {
+        text-align: center;
+        justify-content: center;
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        margin-right: 8px;
+        flex: 1 1 auto;
+    }
+
+    .side-content button:last-child {
+        margin-top: 0;
+    }
+
+    .side-content button.active {
+        border-left: none;
+        border-bottom: 2px solid #4a90e2;
+        padding-left: 15px;
+        /* reset from active state */
+        background: linear-gradient(0deg, rgba(58, 123, 213, 0.15) 0%, rgba(58, 123, 213, 0) 100%);
+    }
+
+    .side-bar {
+        padding: 20px;
+    }
+}
+
+.side-content .child-menu {
+    padding-left: 35px;
+    font-size: 14px;
+}
