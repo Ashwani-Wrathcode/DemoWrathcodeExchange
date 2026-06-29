@@ -185,6 +185,12 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+
+
+    const handleReferral = () => {
+        navigate("/Referral");
+    }
+
     const handleLogin = async (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -328,6 +334,12 @@ function Login() {
                     <a href="/ForgetPassword" className="forgot-link">
                         Forgot Password?
                     </a>
+
+                    <button onClick={handleReferral}>Referral</button>
+
+
+
+
                 </div>
             </div>
         </div>

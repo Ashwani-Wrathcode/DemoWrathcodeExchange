@@ -257,6 +257,10 @@
 
 
 @media (max-width: 992px) {
+    .register-main {
+        padding: 50px 20px;
+    }
+
     .register-card {
         flex-direction: column;
         gap: 30px;
@@ -266,32 +270,53 @@
         width: 240px;
     }
 
-    .register-card h1 {
-        font-size: 32px;
+    .reward-text h1 {
+        font-size: 28px;
     }
 
     .register-form {
         width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 500px;
     }
 }
 
 @media (max-width: 576px) {
     .register-main {
-        padding: 20px;
+        padding: 20px 10px;
     }
 
-    .register-card h1 {
-        font-size: 28px;
+    .reward-text h1 {
+        font-size: 24px;
+    }
+
+    .reward-text h2 {
+        font-size: 20px;
+    }
+
+    .register-form {
+        padding: 25px 15px;
+    }
+
+    .register-form h1 {
+        font-size: 18px;
     }
 
     .tabs button {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .form-group input,
     .register-btn,
     .google-btn {
-        height: 50px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+    .verification-popup {
+        width: 90%;
+        padding: 25px 15px;
     }
 }
 

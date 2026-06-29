@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Cashback from "../../Icon/Cashback.png"
 import FIU from "../../Icon/FIU.png"
 import Withdrawal from "../../Icon/Withdrawal.png"
@@ -27,7 +27,10 @@ import tradeLock from "../../Icon/tradeLock.png";
 import tradeCoin from "../../Icon/tradeCoin.png";
 import goRichMeme from "../../Icon/goRichMeme.png";
 import cloudMing from "../../Icon/cloudMing.png";
-
+import downloadTrade from "../../Icon/downloadTrade.jpeg";
+import imagesTrading from "../../Icon/imagesTrading.jpeg";
+import stockTrading from "../../Icon/stockTrading.jpg";
+import tradingCircle from "../../Icon/tradingCircle.png";
 import "./Landing.css";
 
 const AnimatedText = ({ text, delayOffset = 0 }) => {
@@ -49,6 +52,73 @@ const AnimatedText = ({ text, delayOffset = 0 }) => {
 function Landing() {
 
   const [activeTab, setActiveTab] = useState('MemeCoins');
+  const [visibleCards, setVisibleCards] = useState({
+    meme: false,
+    gainers: false,
+    listings: false,
+    featuresHeading: false
+  });
+
+  const cardRefs = {
+    meme: useRef(null),
+    gainers: useRef(null),
+    listings: useRef(null),
+    featuresHeading: useRef(null)
+  };
+
+  const walletImageRef = useRef(null);
+  const [walletImageOffset, setWalletImageOffset] = useState({ x: 0, y: 0 });
+
+  // Intersection Observer for scroll animation
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.05,
+      rootMargin: '0px 0px -100px 0px'  // Trigger only when scrolled down to bottom 100px
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cardKey = entry.target.getAttribute('data-card');
+          setVisibleCards((prev) => ({
+            ...prev,
+            [cardKey]: true
+          }));
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe each card individually
+    Object.values(cardRefs).forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Wallet image hover animation
+  const handleWalletMouseMove = (e) => {
+    if (!walletImageRef.current) return;
+
+    const rect = walletImageRef.current.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const offsetX = (x - centerX) * 0.2;
+    const offsetY = (y - centerY) * 0.2;
+
+    setWalletImageOffset({ x: offsetX, y: offsetY });
+  };
+
+  const handleWalletMouseLeave = () => {
+    setWalletImageOffset({ x: 0, y: 0 });
+  };
 
   const memeCoins = [
     { name: 'AVAX/USDT', change: '-2.07%', price: '6.67' },
@@ -83,7 +153,6 @@ function Landing() {
         {/* Animated Modern Background */}
         <div className="hero-bg-elements">
           <div className="tech-grid"></div>
-          <div className="bg-glow-1"></div>
           <div className="bg-glow-2"></div>
           <img src={coinCrypto} className="bg-coin coin-1" alt="coin" />
           <img src={coinCrypto} className="bg-coin coin-2" alt="coin" />
@@ -134,7 +203,7 @@ function Landing() {
 
 
       {/* 2. Info Cards Section */}
-      <section className="info-cards-section">
+      {/* <section className="info-cards-section">
         <div className="slider-track">
           <img src={Cashback} alt="cashback" />
           <img src={FIU} alt="fiu" />
@@ -147,7 +216,7 @@ function Landing() {
           <img src={Withdrawal} alt="withdrawal" />
           <img src={USDT} alt="usdt" />
         </div>
-      </section>
+      </section> */}
 
       {/* 3. Trending Cryptocurrencies Section (Preserved Mapping Logic) */}
       <section className="trending-section">
@@ -163,7 +232,11 @@ function Landing() {
           <div className="cards-container">
 
             {/* Meme Coins */}
-            <div className="crypto-card">
+            <div
+              className={`crypto-card ${visibleCards.meme ? 'card-visible' : ''}`}
+              ref={cardRefs.meme}
+              data-card="meme"
+            >
               <h3>Meme Coins</h3>
 
               <table className="crypto-table">
@@ -199,7 +272,11 @@ function Landing() {
             </div>
 
             {/* Top Gainers */}
-            <div className="crypto-card">
+            <div
+              className={`crypto-card ${visibleCards.gainers ? 'card-visible' : ''}`}
+              ref={cardRefs.gainers}
+              data-card="gainers"
+            >
               <h3>Top Gainers</h3>
 
               <table className="crypto-table">
@@ -235,7 +312,11 @@ function Landing() {
             </div>
 
             {/* New Listings */}
-            <div className="crypto-card">
+            <div
+              className={`crypto-card ${visibleCards.listings ? 'card-visible' : ''}`}
+              ref={cardRefs.listings}
+              data-card="listings"
+            >
               <h3>New Listings</h3>
 
               <table className="crypto-table">
@@ -276,42 +357,49 @@ function Landing() {
       </section>
       {/* 4. Wallet Section */}
       <section className="wallet-section">
+        {/* Ambient glow left */}
+        <div className="wallet-glow-left"></div>
+
         <div className="wallet-content">
           <h2>
-            A Crypto Exchange Built<br></br>for <span className="text-highlight">the future.</span>
+            A Crypto Exchange Built<br />for <span className="text-highlight">the future.</span>
           </h2>
           <p className="wallet-subtitle">
             Securely manage, swap, and grow your crypto assets with our next-generation wallet solution.
           </p>
           <ul className="features-checklist">
             <li>
-              <span className="check-icon">✓</span> Lowest transaction fees in the market
+              <span className="check-icon">🛡</span> Lowest transaction fees in the market
             </li>
             <li>
-              <span className="check-icon">✓</span> Instant deposits and withdrawals
+              <span className="check-icon">⚡</span> Instant deposits and withdrawals
             </li>
             <li>
-              <span className="check-icon">✓</span>Advanced 256-bit encryption security
-
+              <span className="check-icon">🔒</span> Advanced 256-bit encryption security
             </li>
-
             <li>
-              <span className="check-icon">✓</span> Real-time portfolio tracking
+              <span className="check-icon">📈</span> Real-time portfolio tracking
             </li>
-
             <li>
-              <span className="check-icon">✓</span>Multi-asset wallet support
+              <span className="check-icon">💼</span> Multi-asset wallet support
             </li>
           </ul>
-          <button className="btn-primary">Download App</button>
+          <button className="btn-primary">⬇ &nbsp;Download App</button>
         </div>
-        <div className="image-placeholder-container wallet-image-container">
+        <div
+          className="image-placeholder-container wallet-image-container"
+          ref={walletImageRef}
+          onMouseMove={handleWalletMouseMove}
+          onMouseLeave={handleWalletMouseLeave}
+        >
           <div className="image-placeholder">
-            <div className="placeholder-content">
-
+            <div className="placeholder-content" style={{
+              transform: `translate(${walletImageOffset.x * 0.5}px, ${walletImageOffset.y * 0.5}px)`,
+              transition: 'transform 0.3s ease-out'
+            }}>
               <img src={cryptoMobile} className='cyptoMobile' alt='mobile' />
               <img src={coinCrypto} className='coinCrypto' alt='trade' />
-              <img src={cryptoWallet} className='cryptoWallet' alt='coin' />
+              {/* <img src={tradeBTC} className='cryptoWallet' alt='trade' /> */}
             </div>
           </div>
         </div>
@@ -331,6 +419,12 @@ function Landing() {
           </div>
         </div>
         <div className='security-mainContent'>
+          {/* Background Decorative Icons behind text */}
+          <img src={tradingCircle} className="security-bg-icon icon-1" alt="trade" />
+          <img src={tradingCircle} className="security-bg-icon icon-2" alt="trade" />
+          <img src={downloadTrade} className="security-bg-icon icon-3" alt="trade" />
+          <img src={downloadTrade} className="security-bg-icon icon-4" alt="trade" />
+
           <div className="security-content">
             <h2>
               <span className="text-highlight">Bulletproof</span>  Security,<br></br> Built
@@ -355,7 +449,7 @@ function Landing() {
 
               <div className="security-grid-item">
                 <span className="grid-number">100%</span>
-                <p>Encrypted Data</p>
+                <p>Encrypted Data</p>.
               </div>
 
               <div className="security-grid-item">
@@ -372,11 +466,19 @@ function Landing() {
 
       {/* 6. Fully Featured Section */}
       <section className="features-grid-section">
-        <div className="features-header">
+        <div className="features-header" ref={cardRefs.featuresHeading} data-card="featuresHeading">
           <h2>
-            Fully Equipped to Buy,
-            <span> Trade & Invest</span> in
-            Crypto.
+            {visibleCards.featuresHeading ? (
+              <>
+                <AnimatedText text="Fully Equipped to Buy, " delayOffset={0} />
+                <span>
+                  <AnimatedText text="Trade & Invest " delayOffset={2.3} />
+                </span>
+                <AnimatedText text="in Crypto." delayOffset={3.8} />
+              </>
+            ) : (
+              <span style={{ opacity: 0 }}>Fully Equipped to Buy, Trade & Invest in Crypto.</span>
+            )}
           </h2>
 
           <div className="features-buttons">

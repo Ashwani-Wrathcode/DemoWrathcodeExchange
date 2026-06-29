@@ -8,6 +8,8 @@ import Assets from "../Components/Assets/Assets";
 import ForgetPassword from "../Components/Auth/ForgetPassword";
 import KycVerification from "../Components/Account/KycVerification/KycVerification";
 import Support from "../Components/Account/Support/Support";
+import Referral from "../Components/Referral/Referral";
+
 
 
 export default function Index() {
@@ -24,6 +26,7 @@ export default function Index() {
             <Route path="/ForgetPassword" element={<ForgetPassword />} />
             <Route path="/KycVerification" element={<KycVerification />} />
             <Route path="/Support" element={<Support />} />
+            <Route path="/Referral" element={<Referral />} />
 
         </Routes>
     );
