@@ -1,4 +1,4 @@
-const appUrl = 'https://backend.demoexchange.wrathcode.com/v1'
+const appUrl = 'https://backend.zillionexchange.com/v1'
 
 
 export const ApiConfig = {

@@ -13,7 +13,7 @@ import coinCrypto from "../../Icon/coinCrypto.png";
 import decorationSide from "../../Icon/decorationSide.png";
 import decorationImage from "../../Icon/decorationImage.png";
 import AuthService from "../../Apis/AuthServices/AuthService";
-
+import { buildSignupPayload } from "./signupPayload";
 
 function SignUp() {
 
@@ -27,6 +27,9 @@ function SignUp() {
     const [mobile, setMobile] = useState("");
     const [password, setPassword] = useState("");
     const [inviteCode, setInviteCode] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [countryCode, setCountryCode] = useState("+91");
     const [checked, setChecked] = useState(false);
 
 
@@ -69,12 +72,21 @@ function SignUp() {
                 return;
             }
 
-            const payload = {
-                email: activeTab === "email" ? email : "",
-                mobile: activeTab === "mobile" ? mobile : "",
+            if (!checked) {
+                toast.warning("Please accept the terms and conditions");
+                return;
+            }
+
+            const payload = buildSignupPayload({
+                activeTab,
+                email,
+                mobile,
                 password,
                 inviteCode,
-            };
+                firstName,
+                lastName,
+                countryCode,
+            });
 
             const response = await AuthService.SignUp(payload);
 
@@ -230,6 +242,33 @@ function SignUp() {
                             />
                         </div>
                     )}
+
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="Country Code"
+                            value={countryCode}
+                            onChange={(e) => setCountryCode(e.target.value)}
+                        />
+                    </div>
 
                     {/* Password */}
                     <div className="form-group password-group">

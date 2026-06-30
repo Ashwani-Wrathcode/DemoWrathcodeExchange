@@ -1,0 +1,20 @@
+export const buildSignupPayload = ({
+  activeTab,
+  email,
+  mobile,
+  password,
+  inviteCode,
+  firstName = "",
+  lastName = "",
+  countryCode = "+91",
+}) => ({
+  email: activeTab === "email" ? email : "",
+  mobile: activeTab === "mobile" ? mobile : "",
+  mobileNumber: activeTab === "mobile" ? mobile : "",
+  password,
+  referral_code: inviteCode || "",
+  token: "",
+  country_code: countryCode,
+  firstName,
+  lastName,
+});
