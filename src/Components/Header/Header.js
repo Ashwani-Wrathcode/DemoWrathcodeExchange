@@ -29,21 +29,12 @@ const Header = () => {
         <div className="dropdown">
           <Link to="/">Trade ▼</Link>
         </div>
-<<<<<<< Updated upstream
-        <Link to="/SpotTrade">Spot Trade ▼</Link>
-        <Link to="/">Earning</Link>
-        <Link to="/">Quick Swap</Link>
-        <Link to="/">Launchpad ▼</Link>
-        <Link to="/">Meme+</Link>
-        <Link to="/">Blogs & News</Link>
-=======
         <a href="/SpotTrade">SpotTrade ▼</a>
         <a href="/">Earning</a>
         <a href="/">Quick Swap </a>
         <a href="/">Launchpad ▼</a>
         <a href="/">Meme+</a>
         <a href="/">Blogs & News</a>
->>>>>>> Stashed changes
 
 
 
