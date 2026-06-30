@@ -9,6 +9,11 @@ import ForgetPassword from "../Components/Auth/ForgetPassword";
 import KycVerification from "../Components/Account/KycVerification/KycVerification";
 import Support from "../Components/Account/Support/Support";
 import Referral from "../Components/Referral/Referral";
+<<<<<<< Updated upstream
+import SpotTrade from "../Components/TradePages/SpotTrade/SpotTrade";
+=======
+import SpotTrade from "../Components/Trading/SpotTrade/SpotTrade";
+>>>>>>> Stashed changes
 
 
 
@@ -27,7 +32,12 @@ export default function Index() {
             <Route path="/KycVerification" element={<KycVerification />} />
             <Route path="/Support" element={<Support />} />
             <Route path="/Referral" element={<Referral />} />
+            <Route path="/SpotTrade" element={<SpotTrade />} />
+<<<<<<< Updated upstream
+            <Route path="*" element={<Navigate to="/Landing" replace />} />
+=======
 
+>>>>>>> Stashed changes
         </Routes>
     );
 }

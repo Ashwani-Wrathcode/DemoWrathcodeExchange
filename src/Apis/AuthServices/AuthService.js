@@ -55,6 +55,12 @@ const AuthService = {
         return ApiCallGet(url);
     },
 
+
+    getReferralHistory: async (data) =>{
+        const url = ApiConfig.baseUrl + ApiConfig.getReferralHistory;
+        return ApiCallGet(url , data)
+    },
+
 }
 
 export default AuthService;

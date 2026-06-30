@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Referral.css';
 import robotImg from '../../Icon/robot.png';
 import {
@@ -7,17 +7,55 @@ import {
     FaUserAlt, FaGift, FaTrophy, FaCheck, FaSearch, FaBoxOpen
 } from 'react-icons/fa';
 
+import AuthService from "../../Apis/AuthServices/AuthService";
+import { toast } from "react-toastify";
+
 export default function Referral() {
+
+
     const [copiedLink, setCopiedLink] = useState(false);
     const [copiedCode, setCopiedCode] = useState(false);
-    const referralCode = "123456789";
-    const referralLink = `https://gatbits.com/refer.eam`;
+    const [referralData, setReferralData] = useState([]);
+    const referralCode = referralData?.referralCode;
+    const referralLink = referralData?.referralLink;
 
-    const handleCopy = (text, setCopied) => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+   const handleCopy = (text, setCopied) => {
+
+    if (!text) {
+        toast.error("Nothing to copy");
+        return;
+    }
+
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+
+    setTimeout(() => {
+        setCopied(false);
+    }, 2000);
+};
+
+
+
+    useEffect(() => {
+        getReferralData();
+    }, []);
+
+
+    const getReferralData = async () => {
+        try {
+            const response = await AuthService.getReferralHistory();
+
+            if (response.data?.success) {
+                setReferralData(response.data.data);
+            } else {
+                toast.error(response.data?.message || "Failed to fetch referral data");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("An error occurred while fetching referral data");
+        }
     };
+
 
     return (
         <div className="referral-page-container">
@@ -116,9 +154,9 @@ export default function Referral() {
                     </div>
                 </div>
 
-                <div className="event-details-link">
+                {/* <div className="event-details-link">
                     Event Details &gt;
-                </div>
+                </div> */}
             </div>
 
             <div className="more-events-section">
@@ -148,7 +186,7 @@ export default function Referral() {
                             </div>
                         </div>
                     </div>
-                    <button className="carousel-nav-btn right-nav"><FaChevronRight /></button>
+
                 </div>
                 <div className="carousel-dots">
                     <span className="dot active"></span>
@@ -168,24 +206,46 @@ export default function Referral() {
 
                 <div className="transactions-table-container">
                     <table className="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Date</th>
-                                <th>Swapping Currencies</th>
-                                <th>Pay Amount</th>
-                                <th>Get Amount</th>
-                                <th>Swapping Fee</th>
-                                <th>Conversion Rate</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                    </table>
 
-                    <div className="empty-state-container">
-                        <FaBoxOpen className="empty-box-icon" />
-                        <p>No Data Available</p>
-                    </div>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Date</th>
+            <th>Swapping Currencies</th>
+            <th>Pay Amount</th>
+            <th>Get Amount</th>
+            <th>Swapping Fee</th>
+            <th>Conversion Rate</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {referralData?.referralHistory?.length > 0 ? (
+            referralData.referralHistory.map((item, index) => (
+                <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.date}</td>
+                    <td>{item.currency}</td>
+                    <td>{item.payAmount}</td>
+                    <td>{item.getAmount}</td>
+                    <td>{item.fee}</td>
+                    <td>{item.rate}</td>
+                    <td>{item.status}</td>
+                </tr>
+            ))
+        ) : (
+            <tr>
+                <td colSpan="8" className="empty-state-container">
+    <FaBoxOpen className="empty-box-icon" />
+    <p>No Data Available</p>
+</td>
+            </tr>
+        )}
+    </tbody>
+
+</table>    
+
                 </div>
             </div>
         </div>

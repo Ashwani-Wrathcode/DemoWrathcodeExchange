@@ -22,6 +22,11 @@ export const ApiConfig = {
     getSupportTickets: "/support/get-user-tickets",
 
 
+    // Referral 
+
+    getReferralHistory:"/",
+
+
 
 
 };

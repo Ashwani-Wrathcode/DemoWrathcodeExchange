@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import WrathcodeIcon from "../../Icon/WrathcodeIcon.png";
 
 const Header = () => {
@@ -24,18 +24,26 @@ const Header = () => {
       </div>
 
       <nav className="nav-links">
-        <a href="/Landing">Home</a>
-
-        <a href="/">Market</a>
+        <Link to="/Landing">Home</Link>
+        <Link to="/">Market</Link>
         <div className="dropdown">
-          <a href="/">Trade ▼</a>
+          <Link to="/">Trade ▼</Link>
         </div>
-        <a href="/">futures ▼</a>
+<<<<<<< Updated upstream
+        <Link to="/SpotTrade">Spot Trade ▼</Link>
+        <Link to="/">Earning</Link>
+        <Link to="/">Quick Swap</Link>
+        <Link to="/">Launchpad ▼</Link>
+        <Link to="/">Meme+</Link>
+        <Link to="/">Blogs & News</Link>
+=======
+        <a href="/SpotTrade">SpotTrade ▼</a>
         <a href="/">Earning</a>
         <a href="/">Quick Swap </a>
         <a href="/">Launchpad ▼</a>
         <a href="/">Meme+</a>
         <a href="/">Blogs & News</a>
+>>>>>>> Stashed changes
 
 
 

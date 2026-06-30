@@ -1,6 +1,5 @@
-.referral-page-container {
+/* .referral-page-container {
     background-color: #0b0e14;
-    /* Match deep dark theme background */
     min-height: 100vh;
     color: #ffffff;
     font-family: 'Inter', 'Roboto', sans-serif;
@@ -18,7 +17,6 @@
     ;
     margin-bottom: 6rem;
     flex-wrap: wrap;
-    /* gap: 3rem; */
 }
 
 .referral-hero-left {
@@ -36,7 +34,6 @@
 .earn-usdt-title {
     font-size: 15px;
     line-height: 1.2;
-    /* margin-bottom: 1.5rem; */
     font-weight: 700;
 }
 
@@ -61,7 +58,6 @@
 .code-row {
     display: flex;
     align-items: center;
-    /* margin-right: 40px; */
     margin-bottom: 1.2rem;
 }
 
@@ -290,7 +286,6 @@
     color: #ffffff;
     margin-bottom: 1.5rem;
     background-color: #0b0e14;
-    /* Match body bg to overlay the divider */
     padding: 0 15px;
 }
 
@@ -311,7 +306,6 @@
     height: 1px;
     background-color: rgba(255, 255, 255, 0.1);
     margin-top: 13px;
-    /* Align with middle of icons */
     z-index: 1;
 }
 
@@ -327,7 +321,6 @@
     color: #ffffff;
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
     .referral-hero-section {
         flex-direction: column;
@@ -385,7 +378,6 @@
     }
 }
 
-/* More Events Section */
 .more-events-section {
     margin-top: 6rem;
     width: 100%;
@@ -503,7 +495,6 @@
     background-color: #ffffff;
 }
 
-/* Recent Transactions Section */
 .recent-transactions-section {
     margin-top: 6rem;
     width: 100%;
@@ -580,4 +571,401 @@
     .events-cards-container {
         flex-direction: column;
     }
+} */
+
+
+ .referral-page-container {
+    background: #0b0e14;
+    /* min-height: 100vh; */
+    margin-top: 3%;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    padding: 40px 5%;
+    overflow-x: hidden;
+}
+
+/* ---------------- HERO SECTION ---------------- */
+
+.referral-hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+.referral-hero-left {
+    flex: 1;
+    max-width: 520px;
+}
+
+.exciting-reward-title {
+    color: #f5b300;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.earn-usdt-title {
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.referral-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #8f96a5;
+    margin-bottom: 25px;
+}
+
+/* ---------------- REFERRAL BOX ---------------- */
+
+.referral-code-box {
+    width: 100%;
+    max-width: 420px;
+    background: #1a202c;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 25px;
+}
+
+.code-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.code-row:last-child {
+    margin-bottom: 0;
+}
+
+.row-label {
+    width: 120px;
+    color: #9aa0ad;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.row-value {
+    flex: 1;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.copy-icon-btn {
+    border: none;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.sign-up-now-btn {
+    background: #f5b300;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 35px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ---------------- RIGHT CARD ---------------- */
+
+.referral-hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-container {
+    position: relative;
+    width: 380px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-card {
+    position: absolute;
+    border-radius: 20px;
+}
+
+.side-card {
+    width: 240px;
+    height: 290px;
+    background: #171c25;
+    opacity: .35;
+}
+
+.left-side {
+    transform: translateX(-45%) scale(.88);
+}
+
+.right-side {
+    transform: translateX(45%) scale(.88);
+}
+
+.center-card {
+    width: 290px;
+    height: 340px;
+    background: linear-gradient(180deg,#1d2430,#11161f);
+    padding: 20px;
+    border-radius: 20px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.carousel-robot-img {
+    width: 110px;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.card-features {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.feature-item {
+    flex: 1;
+    text-align: center;
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,.05);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto 10px;
+}
+
+.feature-item h4 {
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.feature-item p {
+    font-size: 11px;
+    color: #9aa0ad;
+}
+
+.carousel-arrow {
+    position: absolute;
+    color: #999;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.carousel-arrow.left {
+    left: -15px;
+}
+
+.carousel-arrow.right {
+    right: -15px;
+}
+
+/* ---------------- HOW TO REFER ---------------- */
+
+.how-to-refer-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.how-to-title {
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.step-item {
+    flex: 1;
+}
+
+.step-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    margin: auto auto 20px;
+    background: #1b202c;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.step-item h4 {
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.step-item p {
+    color: #8f96a5;
+    font-size: 12px;
+}
+
+.step-divider {
+    width: 1px;
+    background: rgba(255,255,255,.08);
+}
+
+/* ---------------- MORE EVENTS ---------------- */
+
+.more-events-section,
+.recent-transactions-section {
+    margin-top: 60px;
+}
+
+.section-title {
+    font-size: 18px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.events-cards-container {
+    display: flex;
+    gap: 20px;
+}
+
+.event-card {
+    flex: 1;
+    background: #1b202c;
+    border-radius: 15px;
+    padding: 25px;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-card-content h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.event-card-content p {
+    color: #888d9b;
+    font-size: 14px;
+    margin-bottom: 2rem;
+}
+.event-card-image {
+    font-size: 40px;
+    color: #3d4658;
+}
+
+.join-now-btn {
+    /* margin-top: 15px; */
+    /* padding: 10px 10px; */
+    height: 25px;
+    width:100px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ---------------- TABLE ---------------- */
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transactions-table th {
+    padding: 15px;
+    text-align: left;
+    color: #8f96a5;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.empty-state-container {
+    padding: 70px 0;
+    text-align: center;
+}
+
+.empty-box-icon {
+    font-size: 45px;
+    color: #3b4250;
+}
+
+.empty-state-container p {
+    margin-top: 10px;
+    color: #8f96a5;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:992px){
+
+.referral-hero-section{
+    flex-direction:column;
+    text-align:center;
+}
+
+.referral-hero-left{
+    max-width:100%;
+}
+
+.referral-code-box{
+    margin:auto auto 25px;
+}
+
+.carousel-container{
+    width:320px;
+    height:320px;
+}
+
+.center-card{
+    width:250px;
+    height:310px;
+}
+
+.side-card,
+.carousel-arrow{
+    display:none;
+}
+
+.steps-container{
+    flex-direction:column;
+}
+
+.step-divider{
+    display:none;
+}
+
+.events-cards-container{
+    flex-direction:column;
+}
+
+.event-card{
+    flex-direction:column;
+    text-align:center;
+    gap:20px;
+}
+
 }
