@@ -37,7 +37,9 @@ api.interceptors.response.use(
             localStorage.removeItem("token");
             localStorage.removeItem("user");
 
-            window.location.href = "/Login";
+            if (window.location.pathname !== "/Login" && window.location.pathname !== "/SignUp") {
+                window.location.href = "/Login";
+            }
         }
 
         return Promise.reject(error);
@@ -54,6 +56,8 @@ const handleError = (error) => {
                 error.response.data?.message ||
                 error.response.data ||
                 `Error ${error.response.status}`,
+            data: error.response.data?.data,
+            message: error.response.data?.message,
         };
     } else if (error.request) {
         return {

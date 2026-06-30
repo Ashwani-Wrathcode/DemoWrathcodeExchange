@@ -255,6 +255,20 @@
 }
 
 
+.react-tel-input .form-control {
+    display: none !important;
+}
+
+.react-tel-input .flag-dropdown {
+    position: static !important;
+    width: 100% !important;
+    height: 30px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+    background: #f8f3f3 !important;
+    color: #000 !important;
+}
+
 
 @media (max-width: 992px) {
     .register-main {

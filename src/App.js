@@ -13,6 +13,7 @@ const App = () => {
       <Header />
       <Routes>
 
+
         <Route path="/*" element={<Index />} />
       </Routes>
       <ToastContainer />

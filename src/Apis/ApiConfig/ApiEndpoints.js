@@ -6,6 +6,10 @@ export const ApiConfig = {
     baseUrl: appUrl,
 
     login: "/user/login",
+    sendOtpLogin: "/user/send-otp",
+    verifyOtpLogin: "/user/verify-otp",
+
+
     SignUp: "/user/register-email",
     sendOtp: "/user/registration-otp",
     verifyOtp: "/user/verify-registration-otp",
@@ -25,6 +29,11 @@ export const ApiConfig = {
     // Referral 
 
     getReferralHistory:"/",
+
+
+
+    // referral
+    getReferralHistory: "",
 
 
 

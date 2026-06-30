@@ -1,14 +1,6 @@
 import React from 'react'
 import TradingChart from './TradingChart'
 
-const sampleCandles = [
-  { time: 1704067200, open: 102, high: 108, low: 100, close: 106, volume: 1200 },
-  { time: 1704153600, open: 106, high: 112, low: 103, close: 110, volume: 1450 },
-  { time: 1704240000, open: 110, high: 115, low: 107, close: 109, volume: 1320 },
-  { time: 1704326400, open: 109, high: 118, low: 108, close: 116, volume: 1680 },
-  { time: 1704412800, open: 116, high: 121, low: 112, close: 119, volume: 1880 },
-]
-
 const statCards = [
   { label: '24h Volume', value: '$12.4B' },
   { label: '24h High', value: '$121,450' },

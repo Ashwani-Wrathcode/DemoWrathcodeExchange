@@ -15,13 +15,13 @@ const AuthService = {
     },
 
     SendOtp: async (data) => {
-        const url = ApiConfig.baseUrl + ApiConfig.sendOtp;
+        const url = ApiConfig.baseUrl + ApiConfig.sendOtpLogin;
 
         return ApiCallPost(url, data);
     },
 
     VerifyOtp: async (data) => {
-        const url = ApiConfig.baseUrl + ApiConfig.verifyOtp;
+        const url = ApiConfig.baseUrl + ApiConfig.verifyOtpLogin;
 
         return ApiCallPost(url, data);
     },
@@ -53,12 +53,6 @@ const AuthService = {
     getSupportTickets: async () => {
         const url = ApiConfig.baseUrl + ApiConfig.getSupportTickets;
         return ApiCallGet(url);
-    },
-
-
-    getReferralHistory: async (data) =>{
-        const url = ApiConfig.baseUrl + ApiConfig.getReferralHistory;
-        return ApiCallGet(url , data)
     },
 
 }

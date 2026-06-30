@@ -13,8 +13,8 @@ import coinCrypto from "../../Icon/coinCrypto.png";
 import decorationSide from "../../Icon/decorationSide.png";
 import decorationImage from "../../Icon/decorationImage.png";
 import AuthService from "../../Apis/AuthServices/AuthService";
-import { buildSignupPayload } from "./signupPayload";
-
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 function SignUp() {
 
     const navigate = useNavigate();
@@ -30,14 +30,15 @@ function SignUp() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [countryCode, setCountryCode] = useState("+91");
+    const [selectedCountry, setSelectedCountry] = useState("91");
+
     const [checked, setChecked] = useState(false);
 
 
     const emailRegex =
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const mobileRegex =
-        /^[6-9]\d{9}$/;
+    const mobileRegex = /^\d{10,15}$/;
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -77,7 +78,9 @@ function SignUp() {
                 return;
             }
 
-            const payload = buildSignupPayload({
+
+
+            const payload = {
                 activeTab,
                 email,
                 mobile,
@@ -86,14 +89,29 @@ function SignUp() {
                 firstName,
                 lastName,
                 countryCode,
-            });
+            };
 
             const response = await AuthService.SignUp(payload);
 
-            if (response?.data?.success) {
-                toast.success("Registration Successful");
+            if (response?.success) {
 
+                // token save
+                localStorage.setItem(
+                    "token",
+                    response.token
+                );
+
+                toast.success(
+                    response.message || "Registration Successful"
+                );
+
+                // verification popup open
                 setShowVerification(true);
+
+
+                console.log("Saved Token:", response?.token);
+            } else {
+                toast.error(response?.error || "Registration Failed");
             }
         } catch (error) {
             console.log(error);
@@ -107,14 +125,16 @@ function SignUp() {
     const handleSendOtp = async () => {
         try {
             const payload = {
-                email,
-                mobile,
+                signId: activeTab === "email" ? email : mobile,
+                registeredBy: activeTab,
             };
 
             const response = await AuthService.SendOtp(payload);
 
-            if (response?.data?.success) {
+            if (response?.success) {
                 toast.success("OTP Sent Successfully");
+            } else {
+                toast.error(response?.error || "Failed to Send OTP");
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || "Failed to Send OTP");
@@ -131,19 +151,21 @@ function SignUp() {
             }
 
             const payload = {
-                email,
-                mobile,
+                signId: activeTab === "email" ? email : mobile,
+                registeredBy: activeTab,
                 otp,
             };
 
             const response = await AuthService.VerifyOtp(payload);
 
-            if (response?.data?.success) {
+            if (response?.success) {
                 toast.success("Account Verified Successfully");
 
                 setShowVerification(false);
 
                 navigate("/Login");
+            } else {
+                toast.error(response?.error || "Invalid OTP");
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || "Invalid OTP");
@@ -223,22 +245,13 @@ function SignUp() {
                     </div>
 
                     {/* Email/Mobile Input */}
-                    {activeTab === "email" ? (
+                    {activeTab === "email" && (
                         <div className="form-group">
                             <input
                                 type="email"
                                 placeholder="Please enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                    ) : (
-                        <div className="form-group">
-                            <input
-                                type="tel"
-                                placeholder="Please enter your mobile number"
-                                value={mobile}
-                                onChange={(e) => setMobile(e.target.value)}
                             />
                         </div>
                     )}
@@ -262,13 +275,45 @@ function SignUp() {
                     </div>
 
                     <div className="form-group">
-                        <input
-                            type="text"
-                            placeholder="Country Code"
+                        <PhoneInput
+                            country={"in"}
                             value={countryCode}
-                            onChange={(e) => setCountryCode(e.target.value)}
+                            onChange={(value, country) => {
+                                setCountryCode(`+${country.dialCode}`);
+                            }}
+                            enableSearch
+                            countryCodeEditable={false}
+                            disableCountryCode={false}
+                            disableDropdown={false}
+                            inputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </div>
+
+
+
+
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            placeholder="Enter mobile number"
+                            value={mobile}
+                            onChange={(e) => setMobile(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Mobile tab me extra email field */}
+                    {activeTab === "mobile" && (
+                        <div className="form-group">
+                            <input
+                                type="email"
+                                placeholder="Please enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                    )}
 
                     {/* Password */}
                     <div className="form-group password-group">
@@ -351,7 +396,7 @@ function SignUp() {
                                 <span>WRATHCODE</span>
                             </div>
                             <div className="image-lockVerify">
-                                <img src="https://demoexchange.wrathcode.com/images/security_shield.svg" />
+                                <img src="https://demoexchange.wrathcode.com/images/security_shield.svg" alt="Security shield" />
                             </div>
 
                             <h2>Verify Your Account</h2>
@@ -359,8 +404,11 @@ function SignUp() {
 
                             <h1>
                                 Registered {activeTab === "email" ? "Email" : "Mobile"} :
-                                <strong> {email || mobile}</strong>
-                            </h1>
+                                <strong>
+                                    {activeTab === "mobile"
+                                        ? `${countryCode} ${mobile}`
+                                        : email}
+                                </strong>                            </h1>
 
                             <div className="otp-box">
                                 <input

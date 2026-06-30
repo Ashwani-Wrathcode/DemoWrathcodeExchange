@@ -184,6 +184,9 @@ function Login() {
     const [mobileNumber, setMobileNumber] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showVerification, setShowVerification] = useState(false);
+    const [otp, setOtp] = useState("");
+    const [loginData, setLoginData] = useState(null);
 
 
 
@@ -193,7 +196,10 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if (!email || !password) {
+
+        const loginId = activeTab === "email" ? email : mobileNumber;
+
+        if (!loginId || !password) {
             toast.warning("fill all the required fields")
             return;
         }
@@ -203,18 +209,86 @@ function Login() {
         }
         try {
             setLoading(true);
-            const response = await AuthService.login({ email, password })
+            const response = await AuthService.login({ email_or_phone: loginId, password, token: "" });
+            console.log("Login API Response:", response);
+
             if (response.success) {
-                dispatch(login(response.data));
-                toast.success("Login Successfully");
-                navigate("/Dashboard");
+                if (response.data && response.data.token) {
+                    localStorage.setItem("token", response.data.token);
+                } else if (response.token) {
+                    localStorage.setItem("token", response.token);
+                }
+                setLoginData(response.data || response);
+                setShowVerification(true);
+            } else if (
+                (response.message && response.message.toLowerCase().includes("not been activated yet")) ||
+                (response.error && response.error.toLowerCase().includes("not been activated yet"))
+            ) {
+                if (typeof response.data === 'string') {
+                    localStorage.setItem("token", response.data);
+                } else if (response.data && response.data.token) {
+                    localStorage.setItem("token", response.data.token);
+                }
+                setLoginData(response.data || response);
+                setShowVerification(true);
+                toast.info("Please verify your account to continue");
             } else {
-                toast.error("Failed to login");
+                toast.error(response.error || response.message || "Failed to login");
             }
         } catch (error) {
+            console.error("Login catch error:", error);
             toast.error(error.response?.data?.message || "something went wrong")
         } finally {
             setLoading(false)
+        }
+    };
+
+    const handleSendOtp = async () => {
+        try {
+            const payload = {
+                email_or_phone: activeTab === "email" ? email : mobileNumber,
+            };
+
+            const response = await AuthService.SendOtp(payload);
+
+            if (response?.success) {
+                toast.success("OTP Sent Successfully");
+            } else {
+                toast.error(response?.error || "Failed to Send OTP");
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Failed to Send OTP");
+        }
+    };
+
+    const handleVerifyOtp = async () => {
+        try {
+            if (!otp) {
+                toast.warning("Please enter OTP");
+                return;
+            }
+
+            const payload = {
+                signId: activeTab === "email" ? email : mobileNumber,
+                registeredBy: activeTab,
+                otp,
+            };
+
+            const response = await AuthService.VerifyOtp(payload);
+
+            if (response?.success) {
+                toast.success("Account Verified Successfully");
+                setShowVerification(false);
+                if (loginData) {
+                    dispatch(login(loginData));
+                }
+                toast.success("Login Successfully");
+                navigate("/Dashboard");
+            } else {
+                toast.error(response?.error || "Invalid OTP");
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Invalid OTP");
         }
     };
 
@@ -257,10 +331,10 @@ function Login() {
                     </h1>
 
                     <div className="tabs">
-                        <button className={activeTab === "email" ? "active" : ""}
+                        <button type="button" className={activeTab === "email" ? "active" : ""}
                             onClick={() => setActiveTab("email")}>Email
                         </button>
-                        <button className={activeTab === "mobile" ? "active" : ""}
+                        <button type="button" className={activeTab === "mobile" ? "active" : ""}
                             onClick={() => setActiveTab("mobile")}>Mobile
                         </button>
                     </div>
@@ -298,6 +372,7 @@ function Login() {
                     </div>
 
                     <button
+                        type="button"
                         className="login-button"
                         onClick={handleLogin}
                         disabled={loading}
@@ -309,7 +384,7 @@ function Login() {
                         Or continue with
                     </p>
 
-                    <button className="social-btn" onClick={() => loginWithGoogle()} disabled={loading}>
+                    <button type="button" className="social-btn" onClick={() => loginWithGoogle()} disabled={loading}>
                         <img
                             src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
                             alt="google"
@@ -317,7 +392,7 @@ function Login() {
                         Sign in with Google
                     </button>
 
-                    <button className="social-btn" disabled={loading}>
+                    <button type="button" className="social-btn" disabled={loading}>
                         <img
                             src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg"
                             alt="passkey"
@@ -335,7 +410,7 @@ function Login() {
                         Forgot Password?
                     </a>
 
-                    <button onClick={handleReferral}>Referral</button>
+                    <button type="button" onClick={handleReferral}>Referral</button>
 
                    
 
@@ -344,6 +419,50 @@ function Login() {
 
                 </div>
             </div>
+
+            {showVerification && (
+                <div className="verification-overlay">
+                    <div className="verification-popup">
+                        <div className="logo">
+                            <img src={WrathcodeIcon} alt="" />
+                            <span>WRATHCODE</span>
+                        </div>
+                        <div className="image-lockVerify">
+                            <img src="https://demoexchange.wrathcode.com/images/security_shield.svg" alt="Security shield" />
+                        </div>
+
+                        <h2>Verify Your Account</h2>
+                        <p>Make your account 100% secure against unauthorized logins.</p>
+
+                        <h1>
+                            Registered {activeTab === "email" ? "Email" : "Mobile"} :
+                            <strong>
+                                {activeTab === "mobile" ? mobileNumber : email}
+                            </strong>
+                        </h1>
+
+                        <div className="otp-box">
+                            <input
+                                type="text"
+                                placeholder="Enter verification code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                            />
+                            <button type="button" onClick={handleSendOtp}>
+                                GET OTP
+                            </button>
+                        </div>
+
+                        <button className="verify-btn" type="button" onClick={handleVerifyOtp}>
+                            Verify Account
+                        </button>
+
+                        <button className="close-btn" type="button" onClick={() => setShowVerification(false)}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 };
