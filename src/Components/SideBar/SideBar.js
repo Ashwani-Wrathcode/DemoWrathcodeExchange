@@ -21,9 +21,12 @@ import Order from "../Order/Order";
 import Earning from "../Earning/Earning";
 import ActivityLogs from "../Activity/ActivityLogs";
 import KycVerification from "../Account/KycVerification/KycVerification";
-import Support from "../Account/Support/Support"
+import Support from "../Account/Support/Support";
+import { useNavigate } from "react-router";
 
 export default function SideBar() {
+
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("Dashboard");
     const [showAccountChild, setShowAccountChild] = useState(false);
 
@@ -31,6 +34,7 @@ export default function SideBar() {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         alert("Logout Successfully");
+        navigate("/Login")
     };
 
     return (

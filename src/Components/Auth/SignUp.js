@@ -30,7 +30,6 @@ function SignUp() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [countryCode, setCountryCode] = useState("+91");
-    const [selectedCountry, setSelectedCountry] = useState("91");
     const [registeredUserId, setRegisteredUserId] = useState(null);
 
     const [checked, setChecked] = useState(false);
@@ -40,28 +39,6 @@ function SignUp() {
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const mobileRegex = /^\d{10,15}$/;
-
-    const getRegisteredUserId = (data) => {
-        const candidates = [
-            data?.id,
-            data?.user_id,
-            data?.userId,
-            data?.user?.id,
-            data?.user?.user_id,
-            data?.data?.id,
-            data?.data?.user_id,
-            data?.data?.userId,
-        ];
-
-        for (const value of candidates) {
-            const parsedValue = Number(value);
-            if (Number.isFinite(parsedValue) && parsedValue > 0) {
-                return parsedValue;
-            }
-        }
-
-        return null;
-    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -118,10 +95,10 @@ function SignUp() {
 
             if (response?.success) {
                 const signupData = response?.data || response;
-                const userId = getRegisteredUserId(signupData);
 
-                if (userId !== null) {
-                    setRegisteredUserId(userId);
+                const extractedUserId = signupData?.userId || signupData?.user_id || signupData?.data?.userId || signupData?.data?._id || signupData?.user?.id || signupData?.user?._id;
+                if (extractedUserId) {
+                    setRegisteredUserId(extractedUserId);
                 }
 
                 // token save
@@ -154,10 +131,9 @@ function SignUp() {
         try {
             const emailOrPhone = (activeTab === "email" ? email : mobile).trim();
             const payload = {
-                ...(registeredUserId !== null ? { user_id: registeredUserId, userId: registeredUserId } : {}),
-                ...(registeredUserId !== null ? {} : { email_or_phone: emailOrPhone }),
+                signId: emailOrPhone,
+                ...(registeredUserId ? { user_id: registeredUserId, userId: registeredUserId } : {}),
                 registeredBy: activeTab,
-                type: activeTab === "email" ? 1 : 2,
             };
 
             const response = await AuthService.SendOtp(payload);
@@ -183,12 +159,12 @@ function SignUp() {
 
             const emailOrPhone = (activeTab === "email" ? email : mobile).trim();
             const payload = {
-                ...(registeredUserId !== null ? { user_id: registeredUserId, userId: registeredUserId } : {}),
-                ...(registeredUserId !== null ? {} : { email_or_phone: emailOrPhone }),
+                signId: emailOrPhone,
+                verification_code: Number(otp),
+                token: "",
                 registeredBy: activeTab,
-                type: activeTab === "email" ? 1 : 2,
-                otp,
             };
+            console.log(payload);
 
             const response = await AuthService.VerifyOtp(payload);
 
@@ -337,17 +313,6 @@ function SignUp() {
                         />
                     </div>
 
-                    {/* Mobile tab me extra email field */}
-                    {activeTab === "mobile" && (
-                        <div className="form-group">
-                            <input
-                                type="email"
-                                placeholder="Please enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                    )}
 
                     {/* Password */}
                     <div className="form-group password-group">

@@ -187,7 +187,7 @@ function Login() {
     const [showVerification, setShowVerification] = useState(false);
     const [otp, setOtp] = useState("");
     const [loginData, setLoginData] = useState(null);
-
+    const [isActivation, setIsActivation] = useState(false);
 
 
     const handleReferral = () => {
@@ -220,13 +220,27 @@ function Login() {
                 }
 
                 setLoginData(response.data || response);
+                setIsActivation(false);
                 setShowVerification(true);
             } else {
-                toast.error(response.error || response.message || "Failed to login");
+                if (response.message && response.message.includes("not been activated yet")) {
+                    toast.warning(response.message);
+                    setIsActivation(true);
+                    setShowVerification(true);
+                } else {
+                    toast.error(response.error || response.message || "Failed to login");
+                }
             }
         } catch (error) {
             console.error("Login catch error:", error);
-            toast.error(error.response?.data?.message || "something went wrong")
+            const errData = error.response?.data;
+            if (errData && errData.message && errData.message.includes("not been activated yet")) {
+                toast.warning(errData.message);
+                setIsActivation(true);
+                setShowVerification(true);
+            } else {
+                toast.error(errData?.message || "something went wrong")
+            }
         } finally {
             setLoading(false)
         }
@@ -236,9 +250,8 @@ function Login() {
         try {
             const payload = {
                 email_or_phone: activeTab === "email" ? email : mobileNumber,
-                type: activeTab === "email" ? "email" : "mobile",
+                type: activeTab === "email" ? 1 : 2,
             };
-
             const response = await AuthService.sendOtpLogin(payload);
 
             if (response?.success) {
@@ -261,10 +274,11 @@ function Login() {
             const payload = {
                 email_or_phone: activeTab === "email" ? email : mobileNumber,
                 registeredBy: activeTab,
-                type: activeTab === "email" ? "email" : "mobile",
-                otp,
+                type: activeTab === "email" ? 1 : 2,
+                otp: Number(otp),
+                verification_code: Number(otp),
             };
-
+            console.log("verifyOtpLogin payload:", payload);
             const response = await AuthService.verifyOtpLogin(payload);
 
             if (response?.success) {
@@ -403,7 +417,7 @@ function Login() {
 
                     <button type="button" onClick={handleReferral}>Referral</button>
 
-                   
+
 
 
 
@@ -426,7 +440,7 @@ function Login() {
                         <p>Make your account 100% secure against unauthorized logins.</p>
 
                         <h1>
-                            Registered {activeTab === "email" ? "Email" : "Mobile"} :
+                            Login {activeTab === "email" ? "Email" : "Mobile"} :
                             <strong>
                                 {activeTab === "mobile" ? mobileNumber : email}
                             </strong>

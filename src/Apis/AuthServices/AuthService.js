@@ -31,11 +31,9 @@ const AuthService = {
         return ApiCallPost(url, data);
     },
 
-    VerifyOtp: async (data) => {
-        return AuthService.SendOtp(data);
-    },
 
-    verifyOtp: async (data) => {
+
+    VerifyOtp: async (data) => {
         const url = ApiConfig.baseUrl + ApiConfig.verifyOtp;
         return ApiCallPost(url, data);
     },

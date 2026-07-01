@@ -10,6 +10,9 @@ import KycVerification from "../Components/Account/KycVerification/KycVerificati
 import Support from "../Components/Account/Support/Support";
 import Referral from "../Components/Referral/Referral";
 import SpotTrade from "../Components/TradePages/SpotTrade/SpotTrade";
+import ProfileCard from "../Components/Dashboard/Profile/ProfileCard";
+import MarketCard from "../Components/Dashboard/Market/MarketCard";
+
 export default function Index() {
     return (
         <Routes>
@@ -26,6 +29,12 @@ export default function Index() {
             <Route path="/Support" element={<Support />} />
             <Route path="/Referral" element={<Referral />} />
             <Route path="/SpotTrade" element={<SpotTrade />} />
+            <Route path="/ProfileCard" element={<ProfileCard />} />
+            <Route path="/MarketCard" element={<MarketCard />} />
+            
+            
+            
+
             
         </Routes>
     );

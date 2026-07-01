@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Header.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import WrathcodeIcon from "../../Icon/WrathcodeIcon.png";
+import { IoPersonCircleOutline } from "react-icons/io5";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!(token || user));
+  }, [location.pathname]);
 
   const handleLogin = () => {
     navigate("/Login");
@@ -12,6 +21,10 @@ const Header = () => {
 
   const handleSignUp = () => {
     navigate("/SignUp")
+  };
+
+  const handleProfileClick = () => {
+    navigate("/Dashboard");
   };
 
   return (
@@ -35,14 +48,19 @@ const Header = () => {
         <a href="/">Launchpad ▼</a>
         <a href="/">Meme+</a>
         <a href="/">Blogs & News</a>
-
-
-
       </nav>
 
       <div className="auth-buttons">
-        <button onClick={handleLogin} className="login-btn">Log In</button>
-        <button onClick={handleSignUp} className="signup-btn">Sign Up</button>
+        {isLoggedIn ? (
+          <div onClick={handleProfileClick} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+            <IoPersonCircleOutline size={32} color="#fff" />
+          </div>
+        ) : (
+          <>
+            <button onClick={handleLogin} className="login-btn">Log In</button>
+            <button onClick={handleSignUp} className="signup-btn">Sign Up</button>
+          </>
+        )}
       </div>
     </header>
   );

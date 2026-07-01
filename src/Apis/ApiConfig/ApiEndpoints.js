@@ -28,7 +28,7 @@ export const ApiConfig = {
 
     // Referral 
 
-    getReferralHistory:"/",
+    getReferralHistory: "/",
 
 
 
