@@ -1,4 +1,4 @@
-const appUrl = 'https://backend.zillionexchange.com/v1'
+const appUrl = 'https://backend.demoexchange.wrathcode.com/v1'
 
 
 export const ApiConfig = {
@@ -25,11 +25,9 @@ export const ApiConfig = {
     createSupportTicket: "/support/submit-ticket",
     getSupportTickets: "/support/get-user-tickets",
 
+// profile
 
-    // Referral 
-
-    getReferralHistory: "/",
-
+getProfile:"/user/profile",
 
 
     // referral

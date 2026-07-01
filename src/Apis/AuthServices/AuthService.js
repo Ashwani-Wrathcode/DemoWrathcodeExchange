@@ -67,6 +67,11 @@ const AuthService = {
         return ApiCallGet(url);
     },
 
+    getProfile: async () => {
+    const url = ApiConfig.baseUrl + ApiConfig.getProfile;
+    return ApiCallGet(url);
+},
+
 }
 
 export default AuthService;

@@ -173,6 +173,7 @@ import AuthService from '../../Apis/AuthServices/AuthService';
 import { toast } from 'react-toastify';
 import { login } from "../../Store/Slice/authSlice";
 import { useGoogleLogin } from '@react-oauth/google';
+import { persistAuthData } from '../../Utils/authStorage';
 
 function Login() {
     const dispatch = useDispatch();
@@ -213,13 +214,14 @@ function Login() {
             console.log("Login API Response:", response);
 
             if (response.success) {
-                const token = response.data?.token || response.token;
+                const authPayload = persistAuthData(response);
+                const token = authPayload?.token;
 
                 if (token) {
                     localStorage.setItem("token", token);
                 }
 
-                setLoginData(response.data || response);
+                setLoginData(authPayload);
                 setIsActivation(false);
                 setShowVerification(true);
             } else {
@@ -282,10 +284,11 @@ function Login() {
             const response = await AuthService.verifyOtpLogin(payload);
 
             if (response?.success) {
+                const verifiedAuthPayload = persistAuthData(response);
                 toast.success("Account Verified Successfully");
                 setShowVerification(false);
-                if (loginData) {
-                    dispatch(login(loginData));
+                if (verifiedAuthPayload) {
+                    dispatch(login(verifiedAuthPayload));
                 }
                 toast.success("Login Successfully");
                 navigate("/Dashboard");
@@ -408,7 +411,7 @@ function Login() {
 
                     <p className="register-text">
                         Do you have an account?
-                        <span> Register</span>
+                        <span href="SignUp"> Register</span>
                     </p>
 
                     <a href="/ForgetPassword" className="forgot-link">
