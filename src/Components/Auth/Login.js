@@ -213,25 +213,14 @@ function Login() {
             console.log("Login API Response:", response);
 
             if (response.success) {
-                if (response.data && response.data.token) {
-                    localStorage.setItem("token", response.data.token);
-                } else if (response.token) {
-                    localStorage.setItem("token", response.token);
+                const token = response.data?.token || response.token;
+
+                if (token) {
+                    localStorage.setItem("token", token);
                 }
+
                 setLoginData(response.data || response);
                 setShowVerification(true);
-            } else if (
-                (response.message && response.message.toLowerCase().includes("not been activated yet")) ||
-                (response.error && response.error.toLowerCase().includes("not been activated yet"))
-            ) {
-                if (typeof response.data === 'string') {
-                    localStorage.setItem("token", response.data);
-                } else if (response.data && response.data.token) {
-                    localStorage.setItem("token", response.data.token);
-                }
-                setLoginData(response.data || response);
-                setShowVerification(true);
-                toast.info("Please verify your account to continue");
             } else {
                 toast.error(response.error || response.message || "Failed to login");
             }
@@ -247,9 +236,10 @@ function Login() {
         try {
             const payload = {
                 email_or_phone: activeTab === "email" ? email : mobileNumber,
+                type: activeTab === "email" ? "email" : "mobile",
             };
 
-            const response = await AuthService.SendOtp(payload);
+            const response = await AuthService.sendOtpLogin(payload);
 
             if (response?.success) {
                 toast.success("OTP Sent Successfully");
@@ -269,12 +259,13 @@ function Login() {
             }
 
             const payload = {
-                signId: activeTab === "email" ? email : mobileNumber,
+                email_or_phone: activeTab === "email" ? email : mobileNumber,
                 registeredBy: activeTab,
+                type: activeTab === "email" ? "email" : "mobile",
                 otp,
             };
 
-            const response = await AuthService.VerifyOtp(payload);
+            const response = await AuthService.verifyOtpLogin(payload);
 
             if (response?.success) {
                 toast.success("Account Verified Successfully");

@@ -3,26 +3,40 @@ import { ApiConfig } from '../ApiConfig/ApiEndpoints'
 
 const AuthService = {
     login: async (data) => {
-
         const url = ApiConfig.baseUrl + ApiConfig.login;
-
-        return ApiCallPost(url, data)
+        return ApiCallPost(url, data);
     },
 
-    SignUp: async (data) => {
+    sendOtpLogin: async (data) => {
+        const url = ApiConfig.baseUrl + ApiConfig.sendOtpLogin;
+        return ApiCallPost(url, data);
+    },
+
+    verifyOtpLogin: async (data) => {
+        const url = ApiConfig.baseUrl + ApiConfig.verifyOtpLogin;
+        return ApiCallPost(url, data);
+    },
+
+    signUp: async (data) => {
         const url = ApiConfig.baseUrl + ApiConfig.SignUp;
         return ApiCallPost(url, data);
     },
 
-    SendOtp: async (data) => {
-        const url = ApiConfig.baseUrl + ApiConfig.sendOtpLogin;
+    SignUp: async (data) => {
+        return AuthService.signUp(data);
+    },
 
+    SendOtp: async (data) => {
+        const url = ApiConfig.baseUrl + ApiConfig.sendOtp;
         return ApiCallPost(url, data);
     },
 
     VerifyOtp: async (data) => {
-        const url = ApiConfig.baseUrl + ApiConfig.verifyOtpLogin;
+        return AuthService.SendOtp(data);
+    },
 
+    verifyOtp: async (data) => {
+        const url = ApiConfig.baseUrl + ApiConfig.verifyOtp;
         return ApiCallPost(url, data);
     },
 

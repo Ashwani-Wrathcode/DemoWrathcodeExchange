@@ -31,6 +31,7 @@ function SignUp() {
     const [lastName, setLastName] = useState("");
     const [countryCode, setCountryCode] = useState("+91");
     const [selectedCountry, setSelectedCountry] = useState("91");
+    const [registeredUserId, setRegisteredUserId] = useState(null);
 
     const [checked, setChecked] = useState(false);
 
@@ -39,6 +40,28 @@ function SignUp() {
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const mobileRegex = /^\d{10,15}$/;
+
+    const getRegisteredUserId = (data) => {
+        const candidates = [
+            data?.id,
+            data?.user_id,
+            data?.userId,
+            data?.user?.id,
+            data?.user?.user_id,
+            data?.data?.id,
+            data?.data?.user_id,
+            data?.data?.userId,
+        ];
+
+        for (const value of candidates) {
+            const parsedValue = Number(value);
+            if (Number.isFinite(parsedValue) && parsedValue > 0) {
+                return parsedValue;
+            }
+        }
+
+        return null;
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -91,14 +114,20 @@ function SignUp() {
                 countryCode,
             };
 
-            const response = await AuthService.SignUp(payload);
+            const response = await AuthService.signUp(payload);
 
             if (response?.success) {
+                const signupData = response?.data || response;
+                const userId = getRegisteredUserId(signupData);
+
+                if (userId !== null) {
+                    setRegisteredUserId(userId);
+                }
 
                 // token save
                 localStorage.setItem(
                     "token",
-                    response.token
+                    response.token || signupData?.token || ""
                 );
 
                 toast.success(
@@ -108,8 +137,7 @@ function SignUp() {
                 // verification popup open
                 setShowVerification(true);
 
-
-                console.log("Saved Token:", response?.token);
+                console.log("Saved Token:", response?.token || signupData?.token);
             } else {
                 toast.error(response?.error || "Registration Failed");
             }
@@ -124,9 +152,12 @@ function SignUp() {
 
     const handleSendOtp = async () => {
         try {
+            const emailOrPhone = (activeTab === "email" ? email : mobile).trim();
             const payload = {
-                signId: activeTab === "email" ? email : mobile,
+                ...(registeredUserId !== null ? { user_id: registeredUserId, userId: registeredUserId } : {}),
+                ...(registeredUserId !== null ? {} : { email_or_phone: emailOrPhone }),
                 registeredBy: activeTab,
+                type: activeTab === "email" ? 1 : 2,
             };
 
             const response = await AuthService.SendOtp(payload);
@@ -150,9 +181,12 @@ function SignUp() {
                 return;
             }
 
+            const emailOrPhone = (activeTab === "email" ? email : mobile).trim();
             const payload = {
-                signId: activeTab === "email" ? email : mobile,
+                ...(registeredUserId !== null ? { user_id: registeredUserId, userId: registeredUserId } : {}),
+                ...(registeredUserId !== null ? {} : { email_or_phone: emailOrPhone }),
                 registeredBy: activeTab,
+                type: activeTab === "email" ? 1 : 2,
                 otp,
             };
 
